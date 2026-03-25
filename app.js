@@ -80,11 +80,12 @@ async function runHistoryFlow() {
     await runSearchFlow(selectedKeyword);
 }
 
-// Export the functions for use in other modules or for testing purposes
+/* Export the functions for use in other modules or for testing purposes
 module.exports = {
     runSearchFlow,
     runHistoryFlow
 };
+*/
 
 /* For testing purposes
 if(require.main === module) {
