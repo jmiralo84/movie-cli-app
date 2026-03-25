@@ -1,0 +1,31 @@
+{
+  "name": "movie-cli-app",
+  "version": "1.0.0",
+  "description": "Node.js command-line interface that interacts with the Movie Database (TMDB) api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmiralo84/movie-cli-app.git"
+  },
+  "keywords": [
+    "cli",
+    "node",
+    "api",
+    "movies",
+    "movie",
+    "tmdb",
+    "command-line",
+    "title",
+    "movie-title",
+    "release-date"
+  ],
+  "author": "Edgard Zaragoza, Joe Miranda, Lester Low, Benjamin Saucedo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmiralo84/movie-cli-app/issues"
+  },
+  "homepage": "https://github.com/jmiralo84/movie-cli-app#readme"
+}
