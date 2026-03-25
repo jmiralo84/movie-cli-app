@@ -18,16 +18,16 @@ TMDB API
 JavaScript (ES6)
 
 ## Project Structure
-project-root/
-│
-├── cli.js                # Handles CLI commands and user input
-├── app.js                # Core application logic
-├── api.js                # Handles API requests (TMDB)
-├── history.js            # Manages search history
-├── search_history_keyword.json  # Stores past keywords
-├── package.json
-├── package-lock.json
-└── README.md
+* movie-cli-app/
+* │
+* ├── cli.js                # Handles CLI commands and user input
+* ├── app.js                # Core application logic
+* ├── api.js                # Handles API requests (TMDB)
+* ├── history.js            # Manages search history
+* ├── search_history_keyword.json  # Stores past keywords
+* ├── package.json
+* ├── package-lock.json
+* └── README.md
 
 ## Environment Setup
 This project uses the TMDB API, which requires an API key.
