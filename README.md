@@ -5,37 +5,25 @@ This is a Node.js Command Line Interface (CLI) application that interacts with T
 The app allows users to search for movies by keyword, view detailed information about a selected movie, and store search history locally.
 
 ## Features
-Search movies by keyword
-Select a movie from a user-friendly list
-View detailed movie information
-Store unique search keywords in a local JSON file
-View and reuse past search keywords
+* Search movies by keyword
+* Select a movie from a user-friendly list
+* View detailed movie information
+* Store unique search keywords in a local JSON file
+* View and reuse past search keywords
 
 ## Technologies Used
-Node.js
-Axios
-TMDB API
-JavaScript (ES6)
-
-## Project Structure
-* movie-cli-app/
-* │
-* ├── cli.js                # Handles CLI commands and user input
-* ├── app.js                # Core application logic
-* ├── api.js                # Handles API requests (TMDB)
-* ├── history.js            # Manages search history
-* ├── search_history_keyword.json  # Stores past keywords
-* ├── package.json
-* ├── package-lock.json
-* └── README.md
+* Node.js
+* Axios
+* TMDB API
+* JavaScript (ES6)
 
 ## Environment Setup
 This project uses the TMDB API, which requires an API key.
 
-Create an account at https://www.themoviedb.org/
-Generate an API key
-Store your API key in your project (example):
-const API_KEY = "your_api_key_here";
+- Create an account at https://www.themoviedb.org/
+- Generate an API key
+- Store your API key in your project (example):
+- const API_KEY = "your_api_key_here";
 
 
 ## Usage
@@ -59,7 +47,7 @@ node cli.js history keywords
 5. Keywords are stored using history.js
 
 ## Team Members
-Joe Miranda
-Edgard Zaragoza
-Lester Low
-Benjamin Saucedo
+- Joe Miranda
+- Edgard Zaragoza
+- Lester Low
+- Benjamin Saucedo
