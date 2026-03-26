@@ -67,7 +67,7 @@ async function runHistoryFlow() {
             type: 'list',
             name: 'selectedKeyword',
             message: 'Select a keyword to view search results:',
-            choices: keywords
+            choices: ['Exit', ...keywords]
         }
     ]);
 
