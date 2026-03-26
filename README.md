@@ -36,7 +36,7 @@ node cli.js search <keyword>
 ### Example:
 node cli.js search batman
 
-## View Search History
+### View Search History
 node cli.js history keywords
 
 ## How It Works
