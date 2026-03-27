@@ -2,7 +2,7 @@ import { searchMovies, getMovieDetails } from './api.js';
 
 const run = async () => {
     try {
-        const results = await searchMovies('Inception');
+        const results = await searchMovies('Batman');
 
         console.log('Search results:');
         console.log(results[0]);

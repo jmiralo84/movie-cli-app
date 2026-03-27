@@ -8,18 +8,30 @@ node cli.js history keywords -> Provides a list of all searched keywords, and pr
 */
 
 // Imports
-const yargs = require('yargs');
-const { hideBin } = require('yargs/helpers');
-const { runSearchFlow, runHistoryFlow } = require('./app.js');
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import { runSearchFlow, runHistoryFlow } from './app.js';
 
+// Printer Function for help commands
+function printHelp() {
+    console.log('Usage: node cli.js <command> [options]');
+    console.log('Commands:');
+    console.log('  search <keyword>   Search for movies by <keyword>');
+    console.log('  history <keywords> Display list of all searched keywords, and allows selection of a previously searched keyword');
+    console.log('  --help             Display this help message');
+}
+
+// Configure yargs to handle command line arguments and commands
 yargs(hideBin(process.argv))
     .usage('Usage: $0 <command> [options]')
+    /*
     .command( // help command
         '--help',
         'Displays all available commands/parameters',
         () => {}, // no arguments
         () => { printHelp(); } // handler
     )
+        */
     .command( // history command
         'history keywords',
         'Display search history and asks user to select a searched keyword to view related movie results or exit',
@@ -38,13 +50,5 @@ yargs(hideBin(process.argv))
         },
         (argv) => { runSearchFlow(argv.keyword); } // handler
     )
-    .help().argv;
-
-// Printer Function for help commands
-function printHelp() {
-    console.log('Usage: node cli.js <command> [options]');
-    console.log('Commands:');
-    console.log('  search <keyword>   Search for movies by <keyword>');
-    console.log('  history <keywords> Display list of all searched keywords, and allows selection of a previously searched keyword');
-    console.log('  --help             Display this help message');
-}
+    .help()
+    .parse();

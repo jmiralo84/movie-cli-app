@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const BASE = 'https://api.themoviedb.org/3';
-const API_KEY = process.env.TMDB_API_KEY;
+const API_KEY = '5b7cf973d3c43a7e560f50041aaba61b';
 
 if (!API_KEY) {
     throw new Error('Missing TMDB_API_KEY environment variable');
@@ -33,5 +33,9 @@ export const searchMovies = async (query) => {
 };
 
 export const getMovieDetails = async (movieId) => {
+    if (!movieId) {
+        throw new Error('A valid movie ID is required');
+    }
+
     return await get(`/movie/${movieId}`);
 };
