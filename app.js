@@ -120,10 +120,10 @@ async function runSearchFlow(keyword) {
     }
 }
 
-// Function to run the history flow, prompting the user for a keyword
+// Function to run the history flow, displaying previously searched keywords
 async function runHistoryFlow() {
     try {
-        // Retrieve search history and prompt the user to select a keyword
+        // Retrieve search history
         const keywords = getKeywordHistory();
 
         // If there are no keywords in the history, inform the user and exit
@@ -132,24 +132,12 @@ async function runHistoryFlow() {
             return;
         }
 
-        // Prompt the user to select a keyword from the history
-        const { selectedKeyword } = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'selectedKeyword',
-                message: 'Select a keyword to view search results:',
-                choices: ['Exit', ...keywords]
-            }
-        ]);
+        // Display the keyword history to the user
+        console.log(`You searched for: ${keywords.join(', ')}`);
+        // Prompt the user for the next action
+        await promptNextAction();
 
-        // Add an option to exit the application
-        if (selectedKeyword === 'Exit') {
-            console.log('Goodbye.');
-            return;
-        }
 
-        // Run the search flow with the selected keyword
-        await runSearchFlow(selectedKeyword);
     } catch (error) {
         console.log(`Error: ${error.message}`);
     }
