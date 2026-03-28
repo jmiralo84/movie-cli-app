@@ -2,6 +2,7 @@
 // The app allows users to search for movies by keyword, view detailed information about a selected movie, and store search history locally.
 
 // Import necessary modules
+// We're using inquirer for interactive command line prompts, and we have separate modules for API interactions and history management
 import inquirer from 'inquirer';
 import { searchMovies, getMovieDetails } from './api.js';
 import { saveKeyword, getKeywordHistory } from './history.js';
