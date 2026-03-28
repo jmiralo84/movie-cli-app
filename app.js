@@ -6,70 +6,6 @@ import inquirer from 'inquirer';
 import { searchMovies, getMovieDetails } from './api.js';
 import { saveKeyword, getKeywordHistory } from './history.js';
 
-// Function to prompt the user for the next action after displaying movie details
-async function promptNextAction() {
-    const { nextAction } = await inquirer.prompt([
-        {
-            type: 'list',
-            name: 'nextAction',
-            message: 'What would you like to do next? (search, searchbyid, history, exit)',
-            choices: [
-                { name: 'Search', value: 'search' },
-                { name: 'Search by ID', value: 'searchbyid' },
-                { name: 'History', value: 'history' },
-                { name: 'Exit', value: 'exit' }
-            ]
-        }
-    ]);
-
-    // If the user wants to search again, prompt for a new keyword
-    if (nextAction === 'search') {
-        const { newKeyword } = await inquirer.prompt([
-            {
-                type: 'input',
-                name: 'newKeyword',
-                message: 'Enter a movie name to search for:'
-            }
-        ]);
-
-        if (!newKeyword || !newKeyword.trim()) {
-            console.log('No movie name entered.');
-            return;
-        }
-
-        await runSearchFlow(newKeyword.trim());
-        return;
-    }
-
-    if (nextAction === 'searchbyid') {
-        const { movieId } = await inquirer.prompt([
-            {
-                type: 'input',
-                name: 'movieId',
-                message: 'Enter the movie ID to search for:'
-            }
-        ]);
-
-        if (!movieId || !movieId.trim()) {
-            console.log('No movie ID entered.');
-            return;
-        }
-
-        await runIdFlow(movieId.trim());
-        return;
-    }
-
-
-    // If the user wants to view keyword history, run the history flow
-    if (nextAction === 'history') {
-        await runHistoryFlow();
-        return;
-    }
-
-    // Exit the application
-    console.log('Goodbye.');
-}
-
 // Function to run the search flow, prompting the user for a keyword and displaying movie details
 async function runSearchFlow(keyword) {
     try {
@@ -140,6 +76,7 @@ async function runSearchFlow(keyword) {
     }
 }
 
+// Function to run the search, prompting the user for a movie ID and displaying movie details
 async function runIdFlow(movieId) {
     try {
         const movieDetails = await getMovieDetails(movieId);
@@ -183,6 +120,70 @@ async function runHistoryFlow() {
     } catch (error) {
         console.log(`Error: ${error.message}`);
     }
+}
+
+// Function to prompt the user for the next action after displaying movie details
+async function promptNextAction() {
+    const { nextAction } = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'nextAction',
+            message: 'What would you like to do next? (search, searchbyid, history, exit)',
+            choices: [
+                { name: 'Search', value: 'search' },
+                { name: 'Search by ID', value: 'searchbyid' },
+                { name: 'History', value: 'history' },
+                { name: 'Exit', value: 'exit' }
+            ]
+        }
+    ]);
+
+    // If the user wants to search again, prompt for a new keyword
+    if (nextAction === 'search') {
+        const { newKeyword } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'newKeyword',
+                message: 'Enter a movie name to search for:'
+            }
+        ]);
+
+        if (!newKeyword || !newKeyword.trim()) {
+            console.log('No movie name entered.');
+            return;
+        }
+
+        await runSearchFlow(newKeyword.trim());
+        return;
+    }
+
+    if (nextAction === 'searchbyid') {
+        const { movieId } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'movieId',
+                message: 'Enter the movie ID to search for:'
+            }
+        ]);
+
+        if (!movieId || !movieId.trim()) {
+            console.log('No movie ID entered.');
+            return;
+        }
+
+        await runIdFlow(movieId.trim());
+        return;
+    }
+
+
+    // If the user wants to view keyword history, run the history flow
+    if (nextAction === 'history') {
+        await runHistoryFlow();
+        return;
+    }
+
+    // Exit the application
+    console.log('Goodbye.');
 }
 
 // Export the functions for use in other modules or for testing purposes
