@@ -22,18 +22,19 @@ yargs(hideBin(process.argv))
         () => { runHistoryFlow(); } // handler
     )
     .command( // search command
-        'search <keywords>',
+        'search <keywords...>',
         'Search for movies by <keywords>',
         (yargs) => {
             yargs
                 .positional('keywords', {
                     describe: 'Keyword to search for movies',
-                    type: 'string'
+                    type: 'string',
+                    array: true,
                 });
         },
         (argv) => { // handler
             // Concatenates keywords if there are multiple
-            const joinedKeywords = Array.isArray(argv.keywords) ? argv.keywords.join(' ') : String(argv.keywords); 
+            const joinedKeywords = argv.keywords.join(' ');
             runSearchFlow(joinedKeywords); 
         } 
     )
