@@ -12,9 +12,10 @@ async function promptNextAction() {
         {
             type: 'list',
             name: 'nextAction',
-            message: 'What would you like to do next? (search, history, exit)',
+            message: 'What would you like to do next? (search, searchbyid, history, exit)',
             choices: [
                 { name: 'Search', value: 'search' },
+                { name: 'Search by ID', value: 'searchbyid' },
                 { name: 'History', value: 'history' },
                 { name: 'Exit', value: 'exit' }
             ]
@@ -39,6 +40,25 @@ async function promptNextAction() {
         await runSearchFlow(newKeyword.trim());
         return;
     }
+
+    if (nextAction === 'searchbyid') {
+        const { movieId } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'movieId',
+                message: 'Enter the movie ID to search for:'
+            }
+        ]);
+
+        if (!movieId || !movieId.trim()) {
+            console.log('No movie ID entered.');
+            return;
+        }
+
+        await runIdFlow(movieId.trim());
+        return;
+    }
+
 
     // If the user wants to view keyword history, run the history flow
     if (nextAction === 'history') {
@@ -114,6 +134,28 @@ async function runSearchFlow(keyword) {
         console.log(`Rating: ${movieDetails.vote_average || 'N/A'}`);
 
         // Prompt the user for the next action
+        await promptNextAction();
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
+    }
+}
+
+async function runIdFlow(movieId) {
+    try {
+        const movieDetails = await getMovieDetails(movieId);
+
+        if (!movieDetails) {
+            console.log('Could not retrieve movie details.');
+            return;
+        }
+
+        console.log('\nMovie Details');
+        console.log(`ID: ${movieDetails.id}`);
+        console.log(`Title: ${movieDetails.title}`);
+        console.log(`Release Date: ${movieDetails.release_date || 'N/A'}`);
+        console.log(`Overview: ${movieDetails.overview || 'N/A'}`);
+        console.log(`Rating: ${movieDetails.vote_average || 'N/A'}`);
+
         await promptNextAction();
     } catch (error) {
         console.log(`Error: ${error.message}`);
