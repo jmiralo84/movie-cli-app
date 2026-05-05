@@ -1,7 +1,7 @@
 // Author: Joe Miranda
 
 // Import necessary modules
-import {MongoClient} from 'mongodb';
+import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 
 // Load environment variables
@@ -10,13 +10,14 @@ dotenv.config();
 // Create MongoDB connection string using env variables
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
+// Create MongoDB client
 const client = new MongoClient(uri);
 
 // Store database connection
 let db;
 
-// Funch to connect to MongoDB Atlas
-async function connectToDB() {
+// Function to connect to MongoDB Atlas
+async function connectDB() {
     try {
         // If the database connection already exists, return it
         if (db) {
@@ -24,27 +25,28 @@ async function connectToDB() {
         }
 
         // Connect to MongoDB Atlas
-        await client.connect();        
+        await client.connect();
 
         // Select the database
         db = client.db(process.env.DB_NAME);
+
         console.log('Connected to MongoDB Atlas');
 
         return db;
-    }
-    catch (error) {
+    } catch (error) {
         console.log('Error connecting to MongoDB Atlas:', error.message);
         throw error;
     }
 }
 
 // Function to get database connection
-async function getDB() {
+function getDB() {
     if (!db) {
-        throw new Error('Database connection not established. Call connectToDB() first.');        
+        throw new Error('Database connection not established. Call connectDB() first.');
     }
+
     return db;
 }
 
 // Export the functions
-export {connectToDB, getDB};
+export { connectDB, getDB };
