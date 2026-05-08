@@ -1,42 +1,42 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// Author: Edgard Zaragoza
+// This file handles the /history endpoint
 
-// Get the current directory of the module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import express from 'express';
+import { getDB } from '../services/db.js';
 
-const FILE = path.join(__dirname, 'search_history.json');
+const router = express.Router();
 
-function getKeywordHistory() {
-    try {
-        if (!fs.existsSync(FILE)) {
-            fs.writeFileSync(FILE, JSON.stringify([], null, 2));
-            return [];
-        }
+// When someone calls GET /history?type=keywords
+router.get('/', async (req, res) => {
+    // Get the "type" value from the URL
+    const { type } = req.query;
 
-        const data = fs.readFileSync(FILE, 'utf8');
-        return JSON.parse(data || '[]');
-    } catch (error) {
-        console.log('Error reading history:', error.message);
-        return [];
+    // If no type was given, send back an error
+    if (!type) {
+        return res.status(400).json({ error: 'Query parameter "type" is required.' });
     }
-}
 
-function saveKeyword(keyword) {
-    try {
-        const cleanKeyword = keyword.trim().toLowerCase();
-        if (!cleanKeyword) return;
-
-        const history = getKeywordHistory();
-
-        if (!history.includes(cleanKeyword)) {
-            history.push(cleanKeyword);
-            fs.writeFileSync(FILE, JSON.stringify(history, null, 2));
-        }
-    } catch (error) {
-        console.log('Error saving keyword:', error.message);
+    // If type is not "keywords", send back an error
+    if (type !== 'keywords') {
+        return res.status(400).json({ error: 'Invalid type. Only "keywords" is supported.' });
     }
-}
 
-export { saveKeyword, getKeywordHistory };
+    try {
+        // Connect to the database
+        const db = getDB();
+
+        // Get all saved keywords, hide the _id field
+        const keywords = await db
+            .collection('SearchHistoryKeyword')
+            .find({}, { projection: { _id: 0, keyword: 1 } })
+            .toArray();
+
+        // Send the keywords back as JSON
+        res.json(keywords);
+    } catch (error) {
+        // Something went wrong with the database
+        res.status(500).json({ error: 'Failed to retrieve keyword history.' });
+    }
+});
+
+export default router;
