@@ -34,6 +34,7 @@ router.get('/', async (req, res) => {
                 .json({ error: 'Query parameter "keyword" is required.' });
         }
 
+        //trim whitespace
         const trimmedKeyword = keyword.trim();
 
         // call the TMDB search API through services/api.js
@@ -52,6 +53,7 @@ router.get('/', async (req, res) => {
         });
         const existing = await cursor.next();
 
+        //only insert keyword if not saved before
         if (!existing) {
             await db.insert('SearchHistoryKeyword', { keyword: trimmedKeyword });
         }
