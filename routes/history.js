@@ -2,7 +2,7 @@
 // This file handles the /history endpoint
 
 import express from 'express';
-import { getDB } from '../services/db.js';
+import db from '../services/db.js';
 
 const router = express.Router();
 
