@@ -1,5 +1,6 @@
 // Author: Benjamin Saucedo
 // This file handles the /movies endpoints
+//branch to run some tests
 
 import express from 'express';
 
