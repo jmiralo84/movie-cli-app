@@ -1,52 +1,83 @@
-// Author: Joe Miranda
+// mongodb+srv://admin:<db_password>@cluster0.vbffc2e.mongodb.net/?appName=Cluster0
 
-// Import necessary modules
-import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import { MongoClient } from 'mongodb';
 
-// Load environment variables
-dotenv.config();
+// wraps MongoClient and exposes simple helper methods for our app
+const mongo = () => {
+    // load in env vars from the .env file
+    dotenv.config();
 
-// Create MongoDB connection string using env variables
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+    // build the connection string from env vars
+    const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+    const mongoURI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
 
-// Create MongoDB client
-const client = new MongoClient(uri);
+    let client;
+    let db;
 
-// Store database connection
-let db;
+    // open a connection to the database
+    async function connect() {
+        try {
+            client = new MongoClient(mongoURI);
+            await client.connect();
+            db = client.db();
 
-// Function to connect to MongoDB Atlas
-async function connectDB() {
-    try {
-        // If the database connection already exists, return it
-        if (db) {
-            return db;
+            console.log('Connected to Mongo');
+        } catch (error) {
+            console.error(error);
         }
-
-        // Connect to MongoDB Atlas
-        await client.connect();
-
-        // Select the database
-        db = client.db(process.env.DB_NAME);
-
-        console.log('Connected to MongoDB Atlas');
-
-        return db;
-    } catch (error) {
-        console.log('Error connecting to MongoDB Atlas:', error.message);
-        throw error;
-    }
-}
-
-// Function to get database connection
-function getDB() {
-    if (!db) {
-        throw new Error('Database connection not established. Call connectDB() first.');
     }
 
-    return db;
-}
+    // close the database connection
+    async function close() {
+        try {
+            await client.close();
 
-// Export the functions
-export { connectDB, getDB };
+            console.log('Closed Connection to Mongo');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // insert a single document into the given collection
+    async function insert(collectionName, data) {
+        try {
+            const collection = db.collection(collectionName);
+            return await collection.insertOne(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // returns a cursor for the given collection, filtered by query if provided
+    async function find(collectionName, query) {
+        try {
+            const collection = db.collection(collectionName);
+            // if no query is passed, fetch all documents
+            const cursor = query ? collection.find(query) : collection.find({});
+            return await cursor;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function update(collectionName, query, data) {
+        try {
+            const collection = db.collection(collectionName);
+            // specify the update to set a value for the field
+            return await collection.updateOne(query, { $set: data });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    return {
+        connect,
+        close,
+        insert,
+        find,
+        update
+    };
+};
+
+export default mongo();
