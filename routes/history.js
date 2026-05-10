@@ -2,7 +2,7 @@
 // This file handles the /history endpoint
 
 import express from 'express';
-import { getDB } from '../services/db.js';
+import mongo from '../services/db.js';
 
 const router = express.Router();
 
@@ -23,12 +23,11 @@ router.get('/', async (req, res) => {
 
     try {
         // Connect to the database
-        const db = getDB();
+        const cursor = await mongo.find('SearchHistoryKeyword');
 
         // Get all saved keywords, hide the _id field
-        const keywords = await db
-            .collection('SearchHistoryKeyword')
-            .find({}, { projection: { _id: 0, keyword: 1 } })
+        const keywords = await cursor
+            .project({ _id: 0, keyword: 1 })
             .toArray();
 
         // Send the keywords back as JSON

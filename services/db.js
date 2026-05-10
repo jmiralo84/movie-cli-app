@@ -8,6 +8,11 @@ const mongo = () => {
     // load in env vars from the .env file
     dotenv.config();
 
+    console.log('DB_HOST:', process.env.DB_HOST);
+    console.log('DB_NAME:', process.env.DB_NAME);
+    console.log('DB_USER exists:', !!process.env.DB_USER);
+    console.log('DB_PASSWORD exists:', !!process.env.DB_PASSWORD);
+
     // build the connection string from env vars
     const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
     const mongoURI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
@@ -25,6 +30,7 @@ const mongo = () => {
             console.log('Connected to Mongo');
         } catch (error) {
             console.error(error);
+            throw error;
         }
     }
 
