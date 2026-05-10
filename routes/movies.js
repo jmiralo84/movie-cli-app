@@ -35,8 +35,8 @@ router.get('/', async (req, res) => {
                 .json({ error: 'Query parameter "keyword" is required.' });
         }
 
-        //trim whitespace
-        const trimmedKeyword = keyword.trim();
+        //trim whitespace and convert toLowerCase()
+        const trimmedKeyword = keyword.trim().toLowerCase();
 
         // call the TMDB search API through services/api.js
         const movies = await searchMovies(trimmedKeyword);
