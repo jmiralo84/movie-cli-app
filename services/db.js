@@ -1,18 +1,18 @@
-// mongodb+srv://admin:<db_password>@cluster0.vbffc2e.mongodb.net/?appName=Cluster0
+// Author: Joe Miranda
 
+// Import necessary modules
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
+import dns from 'node:dns/promises';
+
+// Load environment variables
+dotenv.config();
+
+// Set DNS servers for MongoDB SRV lookup
+dns.setServers(['8.8.8.8', '1.1.1.1']);
 
 // wraps MongoClient and exposes simple helper methods for our app
-const mongo = () => {
-    // load in env vars from the .env file
-    dotenv.config();
-
-    console.log('DB_HOST:', process.env.DB_HOST);
-    console.log('DB_NAME:', process.env.DB_NAME);
-    console.log('DB_USER exists:', !!process.env.DB_USER);
-    console.log('DB_PASSWORD exists:', !!process.env.DB_PASSWORD);
-
+const mongo = () => {        
     // build the connection string from env vars
     const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
     const mongoURI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`;
