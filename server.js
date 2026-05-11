@@ -1,3 +1,6 @@
+// Author: Lester Low
+
+// Import .env and express
 import 'dotenv/config'; 
 import express from 'express';
 
